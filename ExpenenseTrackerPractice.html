@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row ">
+            
+            <div class="col-lg-6 offset-3">
+                <div class="form-group" id="incomeDiv">
+                    <label>Add Income</label>
+                    <input type="number" id="income" class="form-control" />
+                </div>
+                <button onclick="addIncome()" class="btn btn-success">Add Income</button>
+                <h4 id="showIncome"></h4>
+
+                <div class="form-group" id="">
+                    <label>Add Expense</label>
+                    <input type="number" class="form-control" id="expense">
+                    <br />
+                    <div class="form-group" id="">
+                        <label>Category</label>
+                        <select class="form-control" name="" id="category">
+                            <option value="food">Food</option>
+                            <option value="rent">Rent</option>
+                            <option value="conveyance">conveyance</option>
+
+                        </select>
+                        
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" class="form-control" name="date" id="date">
+                        
+                    </div>
+                    <button type="button" onclick="addExpense()" class="btn btn-danger">Expense</button>
+                    <div class="form-group" id="">
+                        <label>Filter</label>
+                        <select class="form-control" name="" id="filter">
+                            <option value="all">All</option>
+
+                            <option value="food">Food</option>
+                            <option value="rent">Rent</option>
+                            <option value="conveyance">conveyance</option>
+
+                        </select>
+                        <input type="date" class="form-control" name="date" id="dateFilter">
+
+                    </div>
+                   <button class="btn btn-info" onclick="showFilterExpense()">Filter</button>
+                            <ul id="showExpense">
+                            </ul>
+                </div>
+            </div>
+          
+        </div>
+
+    </div>
+
+    <script>
+        var saving = 100
+        var list = document.getElementById('showExpense')
+        var expenses = []
+
+
+        function Expense(expense, category, date) {
+            this.expense = expense
+            this.category = category
+            this.date = date
+
+        }
+
+        function addIncome() {
+            saving += parseInt(document.getElementById('income').value);
+            showIncome()
+        }
+        function showIncome() {
+            document.getElementById('showIncome').innerText = "Saving" + ' : ' + saving
+
+        }
+
+        function addExpense() {
+            var expenseVal = parseInt(document.getElementById('expense').value);
+            var categoryVal = document.getElementById('category').value;
+            var dateVal = document.getElementById('date').value;
+
+
+
+
+            var newExpense = new Expense(expenseVal, categoryVal, dateVal)
+
+            expenses.push(newExpense);
+            console.log(expenses)
+            saving -= expenseVal
+            showIncome()
+            renderItem()
+
+        }
+
+        function renderItem() {
+            item = ''
+            for (var i = 0; i < expenses.length; i++) {
+                item += "<li>" + expenses[i].expense + "/" + expenses[i].category + '/' + expenses[i].date + "</li>"
+            }
+            list.innerHTML = item
+        }
+
+        function showFilterExpense() {
+            var category = document.getElementById("filter").value;
+            var dateFilter = document.getElementById("dateFilter").value;
+
+
+            var item = "";
+            for(var i = 0; i < expenses.length;i++) {
+                if(category === "all") {
+                    item += "<li>" + expenses[i].expense + " - " + expenses[i].category + "-" + expenses[i].date + "</li>"
+                   
+                } else if(category ===  expenses[i].category && dateFilter === expenses[i].date) {
+                    item += "<li>" + expenses[i].expense + " - " + expenses[i].category +  "-" + expenses[i].date +"</li>"
+                    break;
+                    
+                }
+                else if(category ===  expenses[i].category || dateFilter === expenses[i].date) {
+                    item += "<li>" + expenses[i].expense + " - " + expenses[i].category +  "-" + expenses[i].date +"</li>"
+                    
+                    
+                }
+            }
+            list.innerHTML = item
+        }
+        // function showFilterExpense() {
+        //     var category = document.getElementById('filter').value
+        //     var dateFilter = document.getElementById('dateFilter').value
+        
+
+        //     item = '';
+        //     for (var i = 0; i < expenses.length; i++) {
+        //         if (category == 'all') {
+        //             alert('all')
+        //             item += "<li>" + expenses[i].expense + "-" + expenses[i].category + "</li>"
+        //             break;
+
+        //         }else if (category === expenses[i].category) {
+        //             alert('categ')
+
+        //             item += "<li>" + expenses[i].expense + "-" + expenses[i].category + "</li>"
+        //             break;
+
+           
+        //         list.innerHTML = item
+
+
+        //     }
+        // }
+        // }
+
+
+    </script>
+
+
+</body>
+
+</html>
